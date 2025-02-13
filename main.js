@@ -1,10 +1,12 @@
 //Dummy Data(가짜데이터)
-const todos = [
+let todos = [
   { title: "자바스크립트 공부", content: "배열메서드", id: 1, checked: false },
   { title: "자바스크립트 공부", content: "DOM", id: 2, checked: true },
 ];
 
+// 전체 실행
 loadTodos();
+
 // 화면에 투두리스트 전체를 보여주는 함수
 function loadTodos() {
   // ul 태그를 가져온다.
@@ -13,18 +15,71 @@ function loadTodos() {
   ul.innerHTML = "";
   todos.forEach((item, index) => {
     // 1. html 태그 생성하기
+
     const li = document.createElement("li");
-    // 2. 생성한 태그에 todo에 해당하는 제목 넣기
-    li.innerHTML = `<h3>${item.title}</h3>`;
-    // 3. 내용을 넣을 p태그 생성
+    const titleEl = document.createElement("h3");
     const p = document.createElement("p");
-    // 4. p태그 안에 내용 넣기
+    const removeBtn = document.createElement("button");
+
+    /**
+     * li태그
+     */
+    li.style.display = "flex";
+
+    /**
+     * checkbox태그
+     */
+    const checkBox = document.createElement("input");
+    checkBox.setAttribute("type", "checkbox");
+
+    /**
+     * 삭제버튼 태그
+     */
+    removeBtn.innerHTML = "삭제";
+
+    /**
+     * h3태그
+     */
+    titleEl.innerHTML = item.title;
+
+    /**
+     * p태그
+     */
     p.innerHTML = item.content;
     p.style.color = "blue";
-    // 5. p태그를 li태그 안에 넣기
+
+    /**
+     * 태그 삽입 부분
+     */
+    li.appendChild(checkBox);
+    li.appendChild(titleEl);
     li.appendChild(p);
-    // 6. 생성한 태그를 부모태그에 넣기
+    li.appendChild(removeBtn);
     ul.appendChild(li);
+
+    /**
+     * 태그 이벤트 부분
+     */
+
+    // 체크박스의 값이 변경 될때마다 이벤트를 발생
+    checkBox.addEventListener("change", (e) => {
+      // 작동하는 체크박스가 체크됐을경우
+      if (e.target.checked) {
+        // 취소선 스타일 적용
+        li.style.textDecoration = "line-through";
+      } else {
+        // 아닐경우 스타일 없애기
+        li.style.textDecoration = "none";
+      }
+    });
+
+    // 삭제 이벤트 등록
+    removeBtn.addEventListener("click", () => {
+      // 현재 id값을 가진 todo를 삭제
+      removeTodo(item.id);
+      // 화면에 보여지는 li태그 삭제
+      li.remove();
+    });
   });
   console.log(todos);
 }
@@ -51,4 +106,24 @@ function addTodo() {
     id: Math.random().toString(),
   };
   todos.push(newTodo);
+
+  document.getElementById("title").value = "";
+  document.getElementById("content").value = "";
 }
+
+function removeTodo(id) {
+  const newTodo = todos.filter((item) => item.id !== id);
+  todos = [...newTodo];
+}
+const h4 = document.getElementById("time");
+
+setInterval(() => {
+  const date = new Date();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+
+  h4.textContent = `${hours}:${minutes < 10 ? "0" + minutes : minutes}:${
+    seconds < 10 ? "0" + seconds : seconds
+  }`;
+}, 1000);
