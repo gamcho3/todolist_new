@@ -4,8 +4,44 @@ let todos = [
   { title: "자바스크립트 공부", content: "DOM", id: 2, checked: true },
 ];
 
+const showDate = () => {
+  const today = new Date();
+  const day = today.getDay();
+  let koreanDay = "";
+  switch (day) {
+    case 0:
+      koreanDay = "일요일";
+      break;
+    case 1:
+      koreanDay = "월요일";
+      break;
+    case 2:
+      koreanDay = "화요일";
+      break;
+    case 3:
+      koreanDay = "수요일";
+      break;
+    case 4:
+      koreanDay = "목요일";
+      break;
+    case 5:
+      koreanDay = "금";
+      break;
+    case 6:
+      koreanDay = "토";
+      break;
+    default:
+      koreanDay = null;
+  }
+  const showDay = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()} ${koreanDay ?? "날짜 오류 입니다"}`;
+  document.getElementById("day").innerHTML = showDay;
+};
+
 // 전체 실행
 loadTodos();
+showDate();
 
 // 화면에 투두리스트 전체를 보여주는 함수
 function loadTodos() {
@@ -117,6 +153,7 @@ function removeTodo(id) {
 }
 const h4 = document.getElementById("time");
 
+// 현재 시간을 보여주는 타이머
 setInterval(() => {
   const date = new Date();
   const hours = date.getHours();
